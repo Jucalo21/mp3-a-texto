@@ -46,7 +46,7 @@ def transcribe_audio_fragment(fragment, index):
         response = client.audio.transcriptions.create(
             model="whisper-1",
             file=audio_file,
-            prompt="Ten en cuenta que se esta usando un lenguaje farmacéutico y profesional."
+            prompt="The audio is a song"
         )
 
     # Eliminar el archivo temporal
@@ -91,7 +91,9 @@ def transcribe_audio_to_word(file_path, segment_duration=700):
     print(f"Transcripción completa guardada en '{output_docx}'")
 
 # Parámetros de entrada
-audio_file_path = "input/Lunes-1.mp3"  # Cambiar por la ruta real del archivo de audio
+print("Ingrese el nombre del audio a convertir:")
+name=input()
+audio_file_path = f"input/{name}.mp3"  # Cambiar por la ruta real del archivo de audio
 
 # Transcribir el audio y guardar en Word
 transcribe_audio_to_word(audio_file_path, segment_duration=700)
