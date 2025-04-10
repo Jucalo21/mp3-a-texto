@@ -9,6 +9,7 @@ import os
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # Función para dividir el audio en fragmentos usando moviepy
 def split_audio(file_path, segment_duration=700):
     """
@@ -28,6 +29,7 @@ def split_audio(file_path, segment_duration=700):
 
     return fragments
 
+
 # Función para transcribir un fragmento
 def transcribe_audio_fragment(fragment, index):
     """
@@ -44,9 +46,7 @@ def transcribe_audio_fragment(fragment, index):
     with open(temp_file, "rb") as audio_file:
         client = openai.OpenAI()
         response = client.audio.transcriptions.create(
-            model="whisper-1",
-            file=audio_file,
-            prompt="The audio is a song"
+            model="whisper-1", file=audio_file, prompt="The audio is a song"
         )
 
     # Eliminar el archivo temporal
@@ -54,6 +54,7 @@ def transcribe_audio_fragment(fragment, index):
 
     # Retornar la transcripción
     return response.text
+
 
 # Función principal
 def transcribe_audio_to_word(file_path, segment_duration=700):
@@ -66,9 +67,9 @@ def transcribe_audio_to_word(file_path, segment_duration=700):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"El archivo de audio '{file_path}' no existe.")
 
-    #Obtener el nombre del archivo de audio
+    # Obtener el nombre del archivo de audio
     base_name = os.path.splitext(os.path.basename(file_path))[0]
-    output_docx = os.path.join("output",f"{base_name}.docx")
+    output_docx = os.path.join("output", f"{base_name}.docx")
 
     # Dividir el audio en fragmentos
     print("Dividiendo el audio en fragmentos...")
@@ -84,15 +85,15 @@ def transcribe_audio_to_word(file_path, segment_duration=700):
         transcription = transcribe_audio_fragment(fragment, index)
         document.add_paragraph(transcription)
         document.add_paragraph("\n---\n")
-    
+
     # Guardar el documento Word
     os.makedirs("output", exist_ok=True)
     document.save(output_docx)
     print(f"Transcripción completa guardada en '{output_docx}'")
 
+
 # Parámetros de entrada
-print("Ingrese el nombre del audio a convertir:")
-name=input()
+name = input("Ingrese el nombre del audio a convertir:")
 audio_file_path = f"input/{name}.mp3"  # Cambiar por la ruta real del archivo de audio
 
 # Transcribir el audio y guardar en Word
